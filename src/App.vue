@@ -1,32 +1,83 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  
+<!--  header区域-->
+
+<!--  main主体区域-->
+    <router-view></router-view>
+<!--    footer-tab-bar区域-->
+    <ul class="tab-bar">
+      <li>
+        <router-link to="">
+          <i class="iconMoneymanagement"></i>
+          <span>首页</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="">
+          <i class="iconall"></i>
+          <span>分类</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="">
+          <i class="iconcart-full"></i>
+          <span>购物车</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="">
+          <i class="iconusercenter"></i>
+          <span>我的</span>
+        </router-link>
+      </li>
+    </ul>
+    
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+
+export default {
+  name:'App',
+  data(){
+      return {
+
+      }
+  },
 }
 
-#nav {
-  padding: 30px;
+</script>
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<style lang="less" scoped>
+    
+    /*footer-tab-bar区域*/
+    .tab-bar {
+        display: flex;
+        height: 1.111rem;
+        background-color: #f4f4f4;
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 10rem;
+        box-shadow: 0 0 0.093rem 0 rgba(0,0,0,0.5);
+        li{
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            a{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                i{
+                    font-size: 0.648rem;
+                }
+                span{
+                    font-size: 12px;
+                }
+            }
+        }
     }
-  }
-}
 </style>

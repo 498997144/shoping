@@ -1,0 +1,64 @@
+
+@media screen and (max-width:320px){
+
+    html{
+        font-size: 32px!important;
+    }
+}
+
+@media screen and (min-width:540px){
+    html{
+        font-size: 54px!important;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+em,
+i {
+    font-style: normal;
+}
+
+li {
+    list-style: none;
+}
+
+img,button,input {
+    border: 0;
+    vertical-align: middle;
+}
+a{
+    text-decoration: none;
+}
+.clearfix::after,.clearfix::before {
+    visibility: hidden;
+    clear: both;
+    display: block;
+    content: ".";
+    height: 0;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+body {
+    padding: 0;
+    margin: 0 auto;
+    min-width: 320px;
+    max-width: 540px;
+    background: #fff;
+    font-size: 14px!important;
+    font-family: -apple-system,Helvetica,sans-serif Microsoft YaHei;
+    line-height: 1;
+    color: #666;
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.hotpink{
+    color: hotpink;
+}
