@@ -253,7 +253,9 @@
           this.swiper.setTranslate(this.swiperEnd_Y);
           window.addEventListener('scroll',this.windowScroll);
       },
-      destroyed(){},
+      destroyed(){
+          window.removeEventListener("scroll", this.windowScroll);
+      },
       components:{
         topbar:Topbar,
         feature:Feature,

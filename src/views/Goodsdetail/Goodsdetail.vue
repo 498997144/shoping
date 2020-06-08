@@ -16,7 +16,7 @@
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
 <!--    祥情信息展示-->
-    <div ref="shop" class="detail-info" >
+    <div ref="shop" class="detail-info">
       <p class="title">{{detailInfo.itemInfo.title}}</p>
       <ul class="price">
         <li class="realprice hotpink">{{detailInfo.itemInfo.lowNowPrice}}</li>
@@ -27,7 +27,7 @@
         <li v-for="(item,index) in detailInfo.columns" :key="index">{{ item }}</li>
       </ul>
       <ul class="service">
-        <li v-for="(item,index) in  detailInfo.services" :key="index">
+        <li v-for="(item,index) in  detailInfo.services.slice(1)" :key="index">
           <img :src="item.icon">
           <span>{{ item.name }}</span>
         </li>
@@ -40,7 +40,7 @@
 <!--    商品祥情参数-->
     <Detailparams :Detailparams="detailParams" ref="params"></Detailparams>
 <!--    评论区-->
-    <Comment :comment="comment" ref="comment"></Comment>
+    <Comment :comment="comment" ref="comment" @loadEnd="loadEnd"></Comment>
 <!--    推荐区-->
     <Recommend :recommend="recommend" ref="recommend"></Recommend>
   </div>
@@ -87,8 +87,11 @@
                 comment:{},//评论数据
                 recommend:[], //推荐数据
                 EloffsetTops:[], //组件距离顶部的高度;
+                scrollEnd:true,
+                scrollTimer:null,
             }
         },
+        
         computed:{
             shopoffsetTop(){
                 return this.$refs.shop.offsetTop;
@@ -104,6 +107,41 @@
             },
         },
         methods:{
+            //等待子组件图片加完成再绑定滚动事件，准确获取距离顶部的高度。
+            loadEnd(){
+                window.addEventListener('scroll',this.windowScroll);
+            },
+            //窗口滚动事件，tab切换联动
+            windowScroll(){
+                const [[a,b,c,d]] = [[this.shopoffsetTop,this.paramsoffsetTop,this.commentoffsetTop,this.recommendoffsetTop]]
+                if(!this.EloffsetTops.length){
+                    this.EloffsetTops.push(a,b,c,d);
+                }
+                console.log(this.EloffsetTops);
+                if(this.scrollTimer){
+                    clearTimeout(this.scrollTimer);
+                }
+                this.scrollTimer = setTimeout(()=> {
+                    this.scrollEnd = true;
+                    if(this.scrollEnd){
+                       if(this.EloffsetTops.length == 4 ){
+                           this.EloffsetTops.push(1000000);
+                       }
+                        for(let i = 0;i <  this.EloffsetTops.length - 1;i++){
+                            if (this.currentIndex !== 0 && window.pageYOffset >=  this.EloffsetTops[i] && window.pageYOffset < this.EloffsetTops[i + 1]){
+                                this.currentIndex = i;
+                            }
+                        }
+                        // this.EloffsetTops.forEach((item,index)=>{
+                        //     if(this.currentIndex !== index && ((index < this.EloffsetTops.length - 1 && window.pageYOffset >= item && window.pageYOffset < this.EloffsetTops[index+1])
+                        //         || (index == this.EloffsetTops.length - 1 && window.pageYOffset >= item))){
+                        //         this.currentIndex = index;
+                        //     }
+                        // });
+                    }
+                },30);
+                
+            },
             //获取tab联动元素距离顶部的高度
             // getElementHeight(){
             //    this.EloffsetTops.push(this.$refs.shop.offsetTop);
@@ -115,6 +153,8 @@
             //tab点击切换
             //点击tab切换
             tabClick(index){
+                console.log(this.EloffsetTops);
+                this.scrollEnd = false;
                 const [[a,b,c,d]] = [[this.shopoffsetTop,this.paramsoffsetTop,this.commentoffsetTop,this.recommendoffsetTop]]
                 if(!this.EloffsetTops.length){
                     this.EloffsetTops.push(a,b,c,d);
@@ -148,7 +188,23 @@
                 this.recommend = data.list;
             },
         },
+        created() {
+            //请求祥情页数据
+            this.getDetaildata(this.id);
+            this.getRcommend();
+        },
+        mounted(){
+            window.scroll(0,0);
+        },
         updated(){
+           
+            //不一定能准确无误的获取正确的值
+            // this.$nextTick(()=>{
+            //     const [[a,b,c,d]] = [[this.shopoffsetTop,this.paramsoffsetTop,this.commentoffsetTop,this.recommendoffsetTop]]
+            //     if(!this.EloffsetTops.length){
+            //         this.EloffsetTops.push(a,b,c,d);
+            //     }
+            // })
             //使用此方法也无法准确获取到正确的值
             // this.$nextTick(()=>{
             //     // if(!this.EloffsetTops.length){
@@ -156,10 +212,8 @@
             //     // }
             // });
         },
-        created() {
-            //请求祥情页数据
-            this.getDetaildata(this.id);
-            this.getRcommend();
+        destroyed(){
+            window.removeEventListener("scroll", this.windowScroll);
         },
         components:{
             Topbar,

@@ -5,7 +5,7 @@
       <a href="javascript:;">更多</a>
     </div>
     <div class="avatar">
-      <img :src="comment.list[0].user.avatar">
+      <img :src="comment.list[0].user.avatar" @load="loadEnd">
       <span class="uname">{{comment.list[0].user.uname }}</span>
       <span>{{ comment.list[0].created | dateFormat}}</span>
     </div>
@@ -22,6 +22,11 @@
     export default {
         name: "Comment",
         props:['comment'],
+        methods:{
+            loadEnd(){
+                this.$emit('loadEnd')
+            },
+        },
     }
 </script>
 
