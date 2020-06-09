@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import Topbar from "../../common/topbar/Topbar";
+  import Topbar from "../../components/common/topbar/Topbar";
   import Feature from "./homechild/Feature";
   import Tabcontorl from "../../components/content/tabcontorl/Tabcontorl";
   import Goodslist from "../../components/content/goods/Goodslist";

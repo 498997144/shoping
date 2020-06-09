@@ -19,7 +19,7 @@
 </script>
 
 <style lang="less" scoped>
-  @import "../../assets/css/global.less";
+  @import "../../../assets/css/global.less";
     .top-bar{
       position: fixed;
       top: 0;

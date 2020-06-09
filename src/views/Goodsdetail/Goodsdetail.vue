@@ -43,16 +43,22 @@
     <Comment :comment="comment" ref="comment" @loadEnd="loadEnd"></Comment>
 <!--    推荐区-->
     <Recommend :recommend="recommend" ref="recommend"></Recommend>
+<!--    底部栏-->
+    <Bottombar></Bottombar>
+<!--    返回顶部按钮-->
+    <Backtop v-show="backTop" @click.native="backClick"></Backtop>
   </div>
 </template>
 
 <script>
-  import Topbar from "../../common/topbar/Topbar";
+  import Topbar from "../../components/common/topbar/Topbar";
   import Shopinfo from "./children/Shopinfo";
   import Detaildescribe from "./children/Detaildescribe";
   import Detailparams from "./children/Detailparams";
   import Comment from "./children/Comment";
   import Recommend from "./children/Recommend";
+  import Bottombar from "./children/Bottombar";
+  import {backTop} from "../../common/mixin";
   
     export default {
         name: "Goodsdetail",
@@ -109,10 +115,10 @@
         methods:{
             //等待子组件图片加完成再绑定滚动事件，准确获取距离顶部的高度。
             loadEnd(){
-                window.addEventListener('scroll',this.windowScroll);
+                window.addEventListener('scroll',this.windowScrolltab);
             },
             //窗口滚动事件，tab切换联动
-            windowScroll(){
+            windowScrolltab(){
                 const [[a,b,c,d]] = [[this.shopoffsetTop,this.paramsoffsetTop,this.commentoffsetTop,this.recommendoffsetTop]]
                 if(!this.EloffsetTops.length){
                     this.EloffsetTops.push(a,b,c,d);
@@ -213,8 +219,9 @@
             // });
         },
         destroyed(){
-            window.removeEventListener("scroll", this.windowScroll);
+            window.removeEventListener("scroll", this.windowScrolltab);
         },
+        mixins:[backTop],
         components:{
             Topbar,
             Shopinfo,
@@ -222,6 +229,7 @@
             Detailparams,
             Comment,
             Recommend,
+            Bottombar,
         },
     }
 </script>
@@ -229,7 +237,7 @@
 <style lang="less" scoped>
   .goods-detail-container{
     /*padding: 1.111rem 0;*/
-    margin-top: 1.111rem;
+    margin: 1.111rem 0;
     position: absolute;
     z-index: 5;
     width: 10rem;

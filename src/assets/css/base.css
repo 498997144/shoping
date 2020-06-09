@@ -64,6 +64,20 @@ body {
     color: hotpink;
 }
 
+/*//平滑属性*/
 html,body{
     scroll-behavior:smooth
+}
+/*去除移动端点击背景高亮*/
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+/*改变移动控件在不同端的显示*/
+input {
+    -webkit-appearance: none;
+}
+/*禁止长按a,img标签弹出默认系统菜单*/
+img,
+a {
+    -webkit-touch-callout: none;
 }
