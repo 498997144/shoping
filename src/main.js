@@ -22,8 +22,11 @@ import 'normalize.css' //引入标准重置样式
 import './network' //引入网络请求模块
 import './assets/css/base.css' //引入基准样式
 import './common/filters' //引入全局过滤器
+import toast from './components/common/toast/index'
+Vue.use(toast)  //引入全局的提示框插件
 
 Vue.prototype.$bus = new Vue()  //创建单独的事件中心
+
 Vue.config.productionTip = false
 
 new Vue({

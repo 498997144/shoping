@@ -15,7 +15,7 @@
       </div>
     </li>
     <li class="right">
-      <div>加入购物车</div>
+      <div @click="addCart">加入购物车({{$store.state.cartList.length}})</div>
       <div>购买</div>
     </li>
   </ul>
@@ -24,6 +24,11 @@
 <script>
     export default {
         name: "Bottombar",
+        methods:{
+            addCart(){
+                this.$emit('addCart')
+            }
+        },
     }
 </script>
 
@@ -36,6 +41,7 @@
     left: 50%;
     transform: translateX(-50%);
     background:linear-gradient(0deg, #ff79f9, #862081);
+    z-index: 5;
     li{
       flex: 50%;
       display: flex;
@@ -62,7 +68,7 @@
     }
     .right div{
       /*background-color: hotpink;*/
-      font-size: 0.37rem;
+      font-size: 14px;
       color: white;
     }
   }

@@ -44,7 +44,7 @@
 <!--    推荐区-->
     <Recommend :recommend="recommend" ref="recommend"></Recommend>
 <!--    底部栏-->
-    <Bottombar></Bottombar>
+    <Bottombar @addCart="addCart"></Bottombar>
 <!--    返回顶部按钮-->
     <Backtop v-show="backTop" @click.native="backClick"></Backtop>
   </div>
@@ -86,15 +86,16 @@
                     itemInfo:{},
                     columns:[],
                     services:[],
-                }, //祥情信息数据
+                }, //祥情商品信息数据
                 shopInfo:{}, //店铺信息数据
                 detailDescribe:{}, //商品祥情描述数据
                 detailParams:{}, //祥情数据
                 comment:{},//评论数据
                 recommend:[], //推荐数据
                 EloffsetTops:[], //组件距离顶部的高度;
-                scrollEnd:true,
-                scrollTimer:null,
+                scrollEnd:true, //滚动结束判断
+                scrollTimer:null, //滚动防抖
+                clickEnd:true, //提示框点击节流
             }
         },
         
@@ -113,6 +114,26 @@
             },
         },
         methods:{
+            //添加到购物车
+            async addCart(){
+                if(this.clickEnd){
+                    this.clickEnd = false;
+                    const {itemInfo} = this.detailInfo
+                    const shopInfo = {};
+                    shopInfo.desc = itemInfo.desc;
+                    shopInfo.title = itemInfo.title;
+                    shopInfo.id = itemInfo.iid;
+                    shopInfo.price = itemInfo.lowPrice;
+                    shopInfo.image = itemInfo.topImages[0];
+                    shopInfo.count = 1;
+                    shopInfo.checked = true;
+                    const message =  await this.$store.dispatch('addCart',shopInfo);
+                    this.$toast(message,() => {
+                        this.clickEnd = true;
+                    });
+                }
+                
+            },
             //等待子组件图片加完成再绑定滚动事件，准确获取距离顶部的高度。
             loadEnd(){
                 window.addEventListener('scroll',this.windowScrolltab);
@@ -123,7 +144,6 @@
                 if(!this.EloffsetTops.length){
                     this.EloffsetTops.push(a,b,c,d);
                 }
-                console.log(this.EloffsetTops);
                 if(this.scrollTimer){
                     clearTimeout(this.scrollTimer);
                 }
@@ -159,7 +179,7 @@
             //tab点击切换
             //点击tab切换
             tabClick(index){
-                console.log(this.EloffsetTops);
+                // console.log(this.EloffsetTops);
                 this.scrollEnd = false;
                 const [[a,b,c,d]] = [[this.shopoffsetTop,this.paramsoffsetTop,this.commentoffsetTop,this.recommendoffsetTop]]
                 if(!this.EloffsetTops.length){

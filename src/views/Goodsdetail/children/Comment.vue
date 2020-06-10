@@ -1,5 +1,5 @@
 <template>
-  <div v-if="Object.keys(comment).length > 0" class="comment">
+  <div v-if="Object.keys(comment).length > 0 && comment.list" class="comment">
     <div class="title">
       <span>用户评价</span>
       <a href="javascript:;">更多</a>
@@ -11,7 +11,7 @@
     </div>
     <div class="content">
       <p>{{ comment.list[0].content }}</p>
-      <div v-if="comment.list[0].images" class="photo">
+      <div class="photo">
         <img v-for="(item,index) in comment.list[0].images" :src="item" :key="index">
       </div>
     </div>
